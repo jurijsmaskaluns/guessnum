@@ -1,16 +1,18 @@
 package com.company;
 
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
+    static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 
         String answer;
         do {
             Random random = new Random();
-            Scanner scanner = new Scanner(System.in);
+
             System.out.println("I think of number from 1 to 100. Try to guess it.");
             int myNum = random.nextInt(100) + 1;
             System.out.println(myNum);
@@ -18,7 +20,7 @@ public class Main {
             for (i = 1; i < 11; i++) {
                 System.out.print("попытка номер: " + i);
                 System.out.println(", Введи число: ");
-                int userNum = scanner.nextInt();
+                int userNum = askNumber();
                 if (userNum > myNum) {
                     System.out.println("Твоё число больше");
                 } else if (userNum == myNum) {
@@ -32,10 +34,45 @@ public class Main {
                 System.out.println("You lost");
             }
             System.out.println("Once more?");
-            answer = scanner.next();
+//            answer = scanner.next();
+            answer = askAnswer();
         } while (answer.equals("yes"));
 
         System.out.println("good bye");
 
     }
-}
+
+    static String askAnswer() {
+        for (; ; ) {
+            String str = scanner.next();
+            if ("yes".equals(str) || "no".equals(str)) {
+                return str;
+            }
+            System.out.print("Write yes or no ");
+        }
+    }
+        static int askNumber () {
+            for (; ; ) { //beskone4nij cikl
+                try {
+                    int num = scanner.nextInt();
+                    if (num <= 100 && num >= 1) {
+                        return num;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Wrong type");
+                    scanner.next(); //
+                }
+                System.out.print("try again: ");
+            }
+        }
+        //    static int askNumber() {
+//        int num;
+//        do {
+//            num = scanner.nextInt();
+//            if (num < 1 || num > 100) {
+//                System.out.print("try again: ");
+//            }
+//        } while (num < 1 || num > 100);
+//        return num;
+//    }
+    }
