@@ -9,6 +9,8 @@ public class Main {
 
 
     public static void main(String[] args) {
+        long t = System.currentTimeMillis();
+        System.out.println("time: " +t/1000);
         ArrayList<GameResult> leaderbord = new ArrayList<>(); // hranilishe vsego
         try {
             String answer;
@@ -26,7 +28,7 @@ public class Main {
             } while (answer.equalsIgnoreCase("yes"));
 //            System.out.println("good bye 1");
         } catch (NoSuchElementException e1) {
-            System.out.println("good bye 2");
+//            System.out.println("good bye 2");
         }
         for (GameResult r : leaderbord)
         {
