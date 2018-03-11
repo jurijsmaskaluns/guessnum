@@ -1,12 +1,9 @@
 package com.company;
-
-
 import java.util.*;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
     static Random random = new Random();
-
 
     public static void main(String[] args) {
         long t = System.currentTimeMillis();
@@ -20,19 +17,16 @@ public class Main {
                 GameResult r = doGame(name);
                 if (r != null) {
                     leaderbord.add(r);
-//                    System.out.print(r.userName +" ");
-//                    System.out.println(r.attempts);
                 }
                 System.out.println("Once more?");
                 answer = askAnswer();
             } while (answer.equalsIgnoreCase("yes"));
-//            System.out.println("good bye 1");
         } catch (NoSuchElementException e1) {
 //            System.out.println("good bye 2");
         }
         for (GameResult r : leaderbord)
         {
-            System.out.println(r.userName + "\t" + r.attempts);
+            System.out.println(r.userName + "\t" + r.attempts +"\t Time(sec.): " + r.time);
         }
         System.out.println("good bye");
     }
@@ -43,6 +37,7 @@ public class Main {
         result.userName = userName;
         int myNum = random.nextInt(100) + 1;
         System.out.println(myNum);
+        long t1 = System.currentTimeMillis();
         for (int i = 1; i <= 10; i++) {
             System.out.print("попытка номер: " + i);
             System.out.println(", Введи число: ");
@@ -52,6 +47,8 @@ public class Main {
             } else if (userNum == myNum) {
                 System.out.println("Бинго !");
                 result.attempts = i;
+                long t2 = System.currentTimeMillis();
+                result.time = (t2-t1)/1000;
                 return result;
             } else {
                 System.out.println("Твоё число меньше");
@@ -86,14 +83,4 @@ public class Main {
             System.out.print("try again: ");
         }
     }
-    //    static int askNumber() {
-//        int num;
-//        do {
-//            num = scanner.nextInt();
-//            if (num < 1 || num > 100) {
-//                System.out.print("try again: ");
-//            }
-//        } while (num < 1 || num > 100);
-//        return num;
-//    }
 }
