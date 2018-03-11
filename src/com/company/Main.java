@@ -37,7 +37,7 @@ public class Main {
         result.userName = userName;
         int myNum = random.nextInt(100) + 1;
         System.out.println(myNum);
-        long t1 = System.currentTimeMillis();
+        double t1 = System.currentTimeMillis();
         for (int i = 1; i <= 10; i++) {
             System.out.print("попытка номер: " + i);
             System.out.println(", Введи число: ");
@@ -47,7 +47,7 @@ public class Main {
             } else if (userNum == myNum) {
                 System.out.println("Бинго !");
                 result.attempts = i;
-                long t2 = System.currentTimeMillis();
+                double t2 = System.currentTimeMillis();
                 result.time = (t2-t1)/1000;
                 return result;
             } else {
