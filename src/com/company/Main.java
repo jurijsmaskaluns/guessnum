@@ -1,14 +1,20 @@
 package com.company;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
     static Random random = new Random();
+    static File leaderBoardFile = new File("leader-board.txt");
 
     public static void main(String[] args) {
         long t = System.currentTimeMillis();
-        System.out.println("time: " +t/1000);
+        System.out.println("time: " + t / 1000);
         ArrayList<GameResult> leaderbord = new ArrayList<>(); // hranilishe vsego
+        loadLeaderBoard(leaderbord);
         try {
             String answer;
             do {
@@ -24,11 +30,55 @@ public class Main {
         } catch (NoSuchElementException e1) {
 //            System.out.println("good bye 2");
         }
-        for (GameResult r : leaderbord)
-        {
-            System.out.println(r.userName + "\t" + r.attempts +"\t Time(sec.): " + r.time);
-        }
+//        leaderbord.sort(Comparator.comparingDouble(g -> g.time)); // sortirovka spiska po vremeni
+        leaderbord.sort(Comparator.<GameResult>comparingInt(g -> g.attempts).<GameResult>thenComparingDouble(g -> g.time));
+        PrintLeaderBoard(leaderbord);
+        saveLeaderBoard(leaderbord);
         System.out.println("good bye");
+    }
+
+    private static void loadLeaderBoard(ArrayList<GameResult> leaderbord) {
+        if (!leaderBoardFile.exists()) {
+            return;
+        }
+        try (Scanner in = new Scanner(leaderBoardFile)) {
+            while (in.hasNext()) {
+                GameResult r = new GameResult();
+                r.userName = in.next();
+                r.attempts = in.nextInt();
+                r.time = Double.parseDouble(in.next());
+                leaderbord.add(r);
+            }
+        } catch (IOException e) {
+            System.out.println("Something wrong while reading file");
+        }
+    }
+
+    private static void saveLeaderBoard(ArrayList<GameResult> leaderbord) {
+        try (PrintWriter out = new PrintWriter(leaderBoardFile)) { //fail otkroetsja i avtomatom v konce zakroetsja
+            for (GameResult r : leaderbord) {
+                out.printf("%-20s %d %f\n", r.userName, r.attempts, r.time);
+            }
+        } catch (IOException e) {
+            System.out.println("something wrong while writing file");
+        }
+    }
+
+    private static void PrintLeaderBoard(ArrayList<GameResult> leaderbord) {
+
+        for (int o = 0; o < Math.min(leaderbord.size(), 5); o++) {
+            GameResult r = leaderbord.get(o);
+            System.out.println(r.userName + "\t" + r.attempts + "\t Time(sec.): " + r.time);
+        }
+
+//        int o = 0;
+//        for (GameResult r : leaderbord) {
+//            System.out.println(r.userName + "\t" + r.attempts + "\t Time(sec.): " + r.time);
+//            o=o+1;
+//            if(o==5){
+//                break;
+//            }
+//        }
     }
 
     private static GameResult doGame(String userName) {
@@ -48,7 +98,7 @@ public class Main {
                 System.out.println("Бинго !");
                 result.attempts = i;
                 double t2 = System.currentTimeMillis();
-                result.time = (t2-t1)/1000;
+                result.time = (t2 - t1) / 1000;
                 return result;
             } else {
                 System.out.println("Твоё число меньше");
